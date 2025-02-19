@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://s7151rjlrorf"]
+[gd_scene load_steps=7 format=3 uid="uid://s7151rjlrorf"]
+
+[ext_resource type="Script" path="res://current_time.gd" id="1_geju7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1cqo"]
 bg_color = Color(0.968627, 0.85098, 0.698039, 1)
@@ -75,6 +77,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Time..."
 horizontal_alignment = 1
+script = ExtResource("1_geju7")
+
+[node name="Timer" type="Timer" parent="PanelContainer/VBoxContainer/CurrentTime"]
+autostart = true
 
 [node name="CurrentState" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -106,3 +112,5 @@ text = "Start"
 layout_mode = 2
 text = "Stop
 "
+
+[connection signal="timeout" from="PanelContainer/VBoxContainer/CurrentTime/Timer" to="PanelContainer/VBoxContainer/CurrentTime" method="_on_timer_timeout"]
