@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://s7151rjlrorf"]
+[gd_scene load_steps=9 format=3 uid="uid://s7151rjlrorf"]
 
 [ext_resource type="Script" path="res://current_time.gd" id="1_geju7"]
+[ext_resource type="Script" path="res://current_state.gd" id="2_1t0tp"]
+[ext_resource type="Script" path="res://time_left.gd" id="3_ubwit"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1cqo"]
 bg_color = Color(0.968627, 0.85098, 0.698039, 1)
@@ -45,6 +47,7 @@ font_italic = true
 default_font = SubResource("SystemFont_o17a5")
 default_font_size = 24
 Button/colors/font_color = Color(0.480469, 0.309736, 0.172668, 1)
+Button/colors/font_focus_color = Color(0.482353, 0.309804, 0.172549, 1)
 Button/styles/normal = SubResource("StyleBoxFlat_k1cqo")
 Button/styles/pressed = SubResource("StyleBoxFlat_k1cqo")
 Label/colors/font_color = Color(0.482353, 0.309804, 0.172549, 1)
@@ -79,38 +82,49 @@ text = "Time..."
 horizontal_alignment = 1
 script = ExtResource("1_geju7")
 
-[node name="Timer" type="Timer" parent="PanelContainer/VBoxContainer/CurrentTime"]
-autostart = true
-
 [node name="CurrentState" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "TomamoTiming..."
 horizontal_alignment = 1
+script = ExtResource("2_1t0tp")
 
 [node name="TimeLeft" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Time...
 "
 horizontal_alignment = 1
-
-[node name="NextState" type="Label" parent="PanelContainer/VBoxContainer"]
-layout_mode = 2
-text = "Rest
-"
-horizontal_alignment = 1
+script = ExtResource("3_ubwit")
 
 [node name="TextEdit" type="TextEdit" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Task Listing..."
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="StartButton" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Start"
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="StopButton" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
+disabled = true
 text = "Stop
 "
 
-[connection signal="timeout" from="PanelContainer/VBoxContainer/CurrentTime/Timer" to="PanelContainer/VBoxContainer/CurrentTime" method="_on_timer_timeout"]
+[node name="Timer" type="Timer" parent="PanelContainer/VBoxContainer"]
+autostart = true
+
+[node name="WorkOrLongRestTimer" type="Timer" parent="PanelContainer/VBoxContainer"]
+wait_time = 1800.0
+one_shot = true
+
+[node name="RestTimer" type="Timer" parent="PanelContainer/VBoxContainer"]
+wait_time = 300.0
+one_shot = true
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/StartButton" to="PanelContainer/VBoxContainer/CurrentState" method="_on_start_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/StopButton" to="PanelContainer/VBoxContainer/CurrentState" method="_on_stop_button_pressed"]
+[connection signal="timeout" from="PanelContainer/VBoxContainer/Timer" to="PanelContainer/VBoxContainer/CurrentTime" method="_on_timer_timeout"]
+[connection signal="timeout" from="PanelContainer/VBoxContainer/Timer" to="PanelContainer/VBoxContainer/CurrentState" method="_on_timer_timeout"]
+[connection signal="timeout" from="PanelContainer/VBoxContainer/Timer" to="PanelContainer/VBoxContainer/TimeLeft" method="_on_timer_timeout"]
+[connection signal="timeout" from="PanelContainer/VBoxContainer/WorkOrLongRestTimer" to="PanelContainer/VBoxContainer/CurrentState" method="_on_big_timer_timeout"]
+[connection signal="timeout" from="PanelContainer/VBoxContainer/RestTimer" to="PanelContainer/VBoxContainer/CurrentState" method="_on_s_timer_timeout"]

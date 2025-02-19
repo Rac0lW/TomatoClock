@@ -1,11 +1,17 @@
 extends Node
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var current_states:States = States.Resting
 
+var current_time:Dictionary
+var next_time:Dictionary
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+var loop_count:int = 4
+var current_count:int = 0
+
+enum States{
+	Working,
+	Resting,
+	LongResting,
+	Stoping
+}
